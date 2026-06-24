@@ -1,5 +1,3 @@
-# ChatBot
-
 # 🏥 AI-Powered Medical Chatbot  
 
 An AI-based **context-aware medical assistant** that provides reliable responses to health-related queries using a medical knowledge base. Built with LangChain, Gemini API (`Gemini-flash-1.5`), HuggingFace Embeddings and Pinecone.  
