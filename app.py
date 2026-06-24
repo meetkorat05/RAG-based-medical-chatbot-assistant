@@ -12,7 +12,6 @@ import os
 
 app = Flask(__name__)
 
-# Load environment variables
 load_dotenv()
 
 PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY')
@@ -21,23 +20,18 @@ GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GOOGLE_API_KEY"] = GOOGLE_API_KEY
 
-# Load embeddings
 embeddings = download_hugging_face_embeddings()
 
-# Connect to Pinecone index
 index_name = "medical-chatbot"
 docsearch = PineconeVectorStore.from_existing_index(
     index_name=index_name,
     embedding=embeddings
 )
 
-# Retriever setup
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k": 3})
 
-# Use Gemini instead of OpenAI
 chatModel = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
 
-# Prompt template
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
@@ -45,7 +39,6 @@ prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Chains
 question_answer_chain = create_stuff_documents_chain(chatModel, prompt)
 rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
